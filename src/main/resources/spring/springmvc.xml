@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
+		http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+
+	<context:property-placeholder location="classpath:conf/*.properties"/>
+	<!-- 定义Controller的扫描包 -->
+	<context:component-scan base-package="com.atguigu.sso.controller" />
+	<!-- 注解驱动 -->
+	<mvc:annotation-driven />
+	<mvc:default-servlet-handler />
+	<!-- 定义视图解析器 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	
+
+	<!-- 提供方应用信息，用于计算依赖关系 -->
+	<dubbo:application name="atguitu-sso-web" />
+	<dubbo:registry protocol="zookeeper" address="${zookeeperAddress}" />
+	<!-- 声明调用的服务接口-->
+	<dubbo:reference interface="com.atguigu.sso.service.UserService"
+		id="userService" timeout="1000000" /> 
+	 
+</beans>
